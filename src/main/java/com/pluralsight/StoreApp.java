@@ -2,12 +2,15 @@ package com.pluralsight;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class StoreApp {
 
     public static void main(String[] args) {
         ArrayList<Product> inventory = getInventory();
         System.out.println("We carry the following inventory: ");
+
+        inventory.sort(Comparator.comparing(Product::getName));
 
         for (int i = 0; i < inventory.size(); i++) {
             Product p = inventory.get(i);
