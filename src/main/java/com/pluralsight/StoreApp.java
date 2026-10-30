@@ -9,14 +9,14 @@ public class StoreApp {
 
     public static void main(String[] args) {
         ArrayList<Product> inventory = getInventory();
-        String option;
         System.out.println("--( welcome! )--");
 
+        String option;
         do {
             option = menu();
             System.out.println("---|");
             switch (option) {
-                case "1" -> listProducts(inventory);
+                case "1" -> listProducts();
                 case "2" -> searchById(inventory);
                 case "3" -> searchByPrice(inventory);
                 case "4" -> addNewProduct(inventory);
@@ -26,6 +26,24 @@ public class StoreApp {
             System.out.println("---|");
 
         } while (!option.equals("5"));
+    }
+
+    public static String menu() {
+        Scanner scanner = new Scanner(System.in);
+        String menuStructure = """
+                What do you want to do?
+                1- List all products
+                2- Lookup a product by its id
+                3- Find all products within a price range
+                4- Add a new product
+                5- Quit the application
+                Enter command:\s""";
+        System.out.print(menuStructure);
+
+        // TODO: add exception for non strings
+        String input = scanner.nextLine().trim();
+
+        return input;
     }
 
     public static ArrayList<Product> getInventory() {
@@ -44,7 +62,7 @@ public class StoreApp {
                 String name = tokens[1];
                 double price = Double.parseDouble(tokens[2]);
 
-                inventory.add(new Product(id,name,price));
+                inventory.add(new Product(id, name, price));
             }
             bufReader.close();
 
@@ -52,25 +70,8 @@ public class StoreApp {
             System.out.println("ERROR: Invalid IO Stream " + e.getMessage());
         }
 
-    return inventory;
-    }
-
-    public static String menu(){
-        Scanner scanner = new Scanner(System.in);
-        String menuStructure = """
-                What do you want to do?
-                1- List all products
-                2- Lookup a product by its id
-                3- Find all products within a price range
-                4- Add a new product
-                5- Quit the application
-                Enter command:\s""";
-        System.out.print(menuStructure);
-
-        // TODO: add exception for non strings
-        String input = scanner.nextLine().trim();
-
-        return input;
+        inventory.sort(Comparator.comparing(Product::getName));
+        return inventory;
     }
 
     public static void printProducts(ArrayList<Product> inventory) {
@@ -81,10 +82,8 @@ public class StoreApp {
         }
     }
 
-    public static void listProducts(ArrayList<Product> inventory) {
-        inventory.sort(Comparator.comparing(Product::getName));
+    public static void listProducts() {
         System.out.println("\t--Inventory--");
-
         printProducts(getInventory());
     }
 
@@ -95,12 +94,12 @@ public class StoreApp {
         boolean itemFound = false;
 
         int id = Integer.parseInt(input);
-        for(int i = 0; i < inventory.size(); i++) {
+        for (int i = 0; i < inventory.size(); i++) {
             Product p = inventory.get(i);
-            if (id == p.getId()){
+            if (id == p.getId()) {
                 itemFound = true;
                 System.out.printf("\tid: %d %s - Price: $%.2f%n",
-                        p.getId(),p.getName(),p.getPrice());
+                        p.getId(), p.getName(), p.getPrice());
             }
         }
         if (!itemFound) System.out.println("\tno items found!");
@@ -119,12 +118,12 @@ public class StoreApp {
         double lowerPrice = Double.parseDouble(input1);
         double higherPrice = Double.parseDouble(input2);
 
-        for(int i = 0; i < inventory.size(); i++) {
+        for (int i = 0; i < inventory.size(); i++) {
             Product p = inventory.get(i);
-            if (p.getPrice() >= lowerPrice && p.getPrice() <= higherPrice){
+            if (p.getPrice() >= lowerPrice && p.getPrice() <= higherPrice) {
                 itemFound = true;
                 System.out.printf("\tid: %d %s - Price: $%.2f%n",
-                        p.getId(),p.getName(),p.getPrice());
+                        p.getId(), p.getName(), p.getPrice());
             }
         }
         if (!itemFound) System.out.println("\tno items found!");
@@ -145,15 +144,15 @@ public class StoreApp {
         String name = input2;
         double price = Double.parseDouble(input3);
 
-        Product newProd = new Product(id,name,price);
+        Product newProd = new Product(id, name, price);
         inventory.add(newProd);
 
         System.out.print("\titem added, record transaction? (y/n): ");
         String record = scanner.nextLine().trim();
 
-        if (record.equalsIgnoreCase("Y")){
+        if (record.equalsIgnoreCase("Y")) {
             try {
-                BufferedWriter bufWriter = new BufferedWriter(new FileWriter("src/main/resources/inventory.csv",true));
+                BufferedWriter bufWriter = new BufferedWriter(new FileWriter("src/main/resources/inventory.csv", true));
                 String writeProd = String.format("%d|%s|%.2f",
                         newProd.getId(), newProd.getName(), newProd.getPrice());
                 bufWriter.write(writeProd);
