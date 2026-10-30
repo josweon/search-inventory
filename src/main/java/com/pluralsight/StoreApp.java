@@ -3,13 +3,14 @@ package com.pluralsight;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Scanner;
 
 public class StoreApp {
 
     public static void main(String[] args) {
         ArrayList<Product> inventory = getInventory();
         System.out.println("We carry the following inventory: ");
-
+        System.out.println(menu());
         inventory.sort(Comparator.comparing(Product::getName));
 
         for (int i = 0; i < inventory.size(); i++) {
@@ -44,6 +45,23 @@ public class StoreApp {
         }
 
     return inventory;
+    }
+
+    public static int menu(){
+        Scanner scanner = new Scanner(System.in);
+        String menuStructure = """
+                What do you want to do?
+                1- List all products
+                2- Lookup a product by its id
+                3- Find all products within a price range
+                4- Add a new product
+                5- Quit the application
+                Enter command:\s """;
+        System.out.print(menuStructure);
+
+        String input = scanner.nextLine().trim();
+
+        return Integer.parseInt(input);
     }
 
     /* HELPER FUNCTION: Adds items to inventory.csv
