@@ -9,8 +9,6 @@ public class StoreApp {
         ArrayList<Product> inventory = getInventory();
         System.out.println("We carry the following inventory: ");
 
-        addToCsv();
-
         for (int i = 0; i < inventory.size(); i++) {
             Product p = inventory.get(i);
             System.out.printf("id: %d %s - Price: $%.2f%n",
@@ -21,15 +19,31 @@ public class StoreApp {
     public static ArrayList<Product> getInventory() {
         ArrayList<Product> inventory = new ArrayList<Product>();
 
-        inventory.add(new Product(211, "Apple", 1.99));
-        inventory.add(new Product(222, "Pear", 3.99));
-        inventory.add(new Product(217, "Milk", 8.50));
-        inventory.add(new Product(281, "Bread", 4.75));
-        inventory.add(new Product(215, "Rice (1/2 pound)", 11.99));
+        try {
+            BufferedReader bufReader = new BufferedReader(new FileReader("src/main/resources/inventory.csv"));
+            bufReader.readLine();
+
+            String input;
+
+            while ((input = bufReader.readLine()) != null) {
+                String[] tokens = input.split("\\|");
+
+                int id = Integer.parseInt(tokens[0]);
+                String name = tokens[1];
+                double price = Double.parseDouble(tokens[2]);
+
+                inventory.add(new Product(id,name,price));
+            }
+            bufReader.close();
+
+        } catch (IOException e) {
+            System.out.println("ERROR: Invalid IO Stream " + e.getMessage());
+        }
 
     return inventory;
     }
 
+    /* HELPER FUNCTION: Adds items to inventory.csv
     public static void addToCsv(){
         try {
             BufferedWriter bufWriter = new BufferedWriter(new FileWriter("src/main/resources/inventory.csv"));
@@ -49,6 +63,6 @@ public class StoreApp {
         } catch (IOException e) {
             System.out.println("ERROR: Invalid IO Stream " + e.getMessage());
         }
-
     }
+     */
 }
