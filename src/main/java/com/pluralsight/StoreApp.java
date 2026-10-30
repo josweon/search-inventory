@@ -13,16 +13,16 @@ public class StoreApp {
 
         do {
             option = menu();
-            System.out.println("---");
+            System.out.println("---|");
             switch (option) {
                 case 1 -> listProducts(inventory);
-//                case 2 -> searchById();
-//                case 3 -> searchByPrice();
+                case 2 -> searchById(inventory);
+                case 3 -> searchByPrice(inventory);
 //                case 4 -> addNewProduct;
 //                case 5 -> quit();
                 default -> System.out.println("Invalid operation");
             }
-            System.out.println("---");
+            System.out.println("---|");
         } while (option != 5);
     }
 
@@ -62,7 +62,7 @@ public class StoreApp {
                 3- Find all products within a price range
                 4- Add a new product
                 5- Quit the application
-                Enter command:\s """;
+                Enter command:\s""";
         System.out.print(menuStructure);
 
         String input = scanner.nextLine().trim();
@@ -85,6 +85,35 @@ public class StoreApp {
         printProducts(getInventory());
     }
 
+    public static void searchById(ArrayList<Product> inventory) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("\t--Search--\n\tEnter Product ID: ");
+        String input = scanner.nextLine();
+        boolean itemFound = false;
+
+        int id = Integer.parseInt(input);
+        for(int i = 0; i < inventory.size(); i++) {
+            Product p = inventory.get(i);
+            if (id == p.getId()){
+                itemFound = true;
+                System.out.printf("\tid: %d %s - Price: $%.2f%n",
+                        p.getId(),p.getName(),p.getPrice());
+            }
+        }
+        if (!itemFound) System.out.println("\tno items found!");
+    }
+
+    public static void searchByPrice(ArrayList<Product> inventory) {
+
+    }
+
+    public static void addNewProduct(ArrayList<Product> inventory) {
+
+    }
+
+    public static void quit() {
+
+    }
     /* HELPER FUNCTION: Adds items to inventory.csv
     public static void addToCsv(){
         try {
