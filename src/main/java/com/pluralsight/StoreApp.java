@@ -8,16 +8,20 @@ import java.util.Scanner;
 public class StoreApp {
 
     public static void main(String[] args) {
+        int option;
         ArrayList<Product> inventory = getInventory();
         System.out.println("We carry the following inventory: ");
-        System.out.println(menu());
         inventory.sort(Comparator.comparing(Product::getName));
 
-        for (int i = 0; i < inventory.size(); i++) {
-            Product p = inventory.get(i);
-            System.out.printf("id: %d %s - Price: $%.2f%n",
-                    p.getId(), p.getName(), p.getPrice());
-        }
+        do {
+            option = menu();
+
+            for (int i = 0; i < inventory.size(); i++) {
+                Product p = inventory.get(i);
+                System.out.printf("id: %d %s - Price: $%.2f%n",
+                        p.getId(), p.getName(), p.getPrice());
+            }
+        } while (option != 5);
     }
 
     public static ArrayList<Product> getInventory() {
