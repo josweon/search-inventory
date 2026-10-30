@@ -9,21 +9,23 @@ public class StoreApp {
 
     public static void main(String[] args) {
         ArrayList<Product> inventory = getInventory();
-        int option;
+        String option;
+        System.out.println("--( welcome! )--");
 
         do {
             option = menu();
             System.out.println("---|");
             switch (option) {
-                case 1 -> listProducts(inventory);
-                case 2 -> searchById(inventory);
-                case 3 -> searchByPrice(inventory);
-//                case 4 -> addNewProduct;
-//                case 5 -> quit();
+                case "1" -> listProducts(inventory);
+                case "2" -> searchById(inventory);
+                case "3" -> searchByPrice(inventory);
+                case "4" -> addNewProduct(inventory);
+                case "5" -> quit();
                 default -> System.out.println("Invalid operation");
             }
             System.out.println("---|");
-        } while (option != 5);
+
+        } while (!option.equals("5"));
     }
 
     public static ArrayList<Product> getInventory() {
@@ -53,7 +55,7 @@ public class StoreApp {
     return inventory;
     }
 
-    public static int menu(){
+    public static String menu(){
         Scanner scanner = new Scanner(System.in);
         String menuStructure = """
                 What do you want to do?
@@ -68,7 +70,7 @@ public class StoreApp {
         // TODO: add exception for non strings
         String input = scanner.nextLine().trim();
 
-        return Integer.parseInt(input);
+        return input;
     }
 
     public static void printProducts(ArrayList<Product> inventory) {
@@ -88,7 +90,7 @@ public class StoreApp {
 
     public static void searchById(ArrayList<Product> inventory) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("\t--Search--\n\tEnter Product ID: ");
+        System.out.print("\t--Search (ID)--\n\tEnter Product ID: ");
         String input = scanner.nextLine();
         boolean itemFound = false;
 
@@ -104,9 +106,28 @@ public class StoreApp {
         if (!itemFound) System.out.println("\tno items found!");
     }
 
-    // TODO: implement searchByPrice
     public static void searchByPrice(ArrayList<Product> inventory) {
+        Scanner scanner = new Scanner(System.in);
 
+        System.out.print("\t--Search (Price)--\n\tEnter price(low): $");
+        String input1 = scanner.nextLine();
+        System.out.print("\tEnter price(high): $");
+        String input2 = scanner.nextLine();
+        System.out.println("\t* * * *");
+
+        boolean itemFound = false;
+        double lowerPrice = Double.parseDouble(input1);
+        double higherPrice = Double.parseDouble(input2);
+
+        for(int i = 0; i < inventory.size(); i++) {
+            Product p = inventory.get(i);
+            if (p.getPrice() >= lowerPrice && p.getPrice() <= higherPrice){
+                itemFound = true;
+                System.out.printf("\tid: %d %s - Price: $%.2f%n",
+                        p.getId(),p.getName(),p.getPrice());
+            }
+        }
+        if (!itemFound) System.out.println("\tno items found!");
     }
 
     // TODO: implement addNewProduct
@@ -114,10 +135,10 @@ public class StoreApp {
 
     }
 
-    // TODO: implement quit
     public static void quit() {
-
+        System.out.println("--( goodbye! )--");
     }
+
     /* HELPER FUNCTION: Adds items to inventory.csv
     public static void addToCsv(){
         try {
