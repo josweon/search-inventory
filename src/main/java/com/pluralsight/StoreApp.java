@@ -8,28 +8,21 @@ import java.util.Scanner;
 public class StoreApp {
 
     public static void main(String[] args) {
-        int option;
         ArrayList<Product> inventory = getInventory();
-        System.out.println("We carry the following inventory: ");
-        inventory.sort(Comparator.comparing(Product::getName));
+        int option;
 
         do {
             option = menu();
-
+            System.out.println("---");
             switch (option) {
-                case 1 -> listProducts();
-                case 2 -> searchById();
-                case 3 -> searchByPrice();
-                case 4 -> addNewProduct;
-                case 5 -> quit();
+                case 1 -> listProducts(inventory);
+//                case 2 -> searchById();
+//                case 3 -> searchByPrice();
+//                case 4 -> addNewProduct;
+//                case 5 -> quit();
                 default -> System.out.println("Invalid operation");
             }
-
-            for (int i = 0; i < inventory.size(); i++) {
-                Product p = inventory.get(i);
-                System.out.printf("id: %d %s - Price: $%.2f%n",
-                        p.getId(), p.getName(), p.getPrice());
-            }
+            System.out.println("---");
         } while (option != 5);
     }
 
@@ -75,6 +68,21 @@ public class StoreApp {
         String input = scanner.nextLine().trim();
 
         return Integer.parseInt(input);
+    }
+
+    public static void printProducts(ArrayList<Product> inventory) {
+        for (int i = 0; i < inventory.size(); i++) {
+            Product p = inventory.get(i);
+            System.out.printf("id: %d %s - Price: $%.2f%n",
+                    p.getId(), p.getName(), p.getPrice());
+        }
+    }
+
+    public static void listProducts(ArrayList<Product> inventory) {
+        inventory.sort(Comparator.comparing(Product::getName));
+        System.out.println("We carry the following inventory: ");
+
+        printProducts(getInventory());
     }
 
     /* HELPER FUNCTION: Adds items to inventory.csv
