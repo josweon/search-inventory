@@ -130,16 +130,47 @@ public class StoreApp {
         if (!itemFound) System.out.println("\tno items found!");
     }
 
-    // TODO: implement addNewProduct
     public static void addNewProduct(ArrayList<Product> inventory) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\t--Add Product--");
 
+        System.out.print("\tEnter ID: ");
+        String input1 = scanner.nextLine().trim();
+        System.out.print("\tEnter Name: ");
+        String input2 = scanner.nextLine().trim();
+        System.out.print("\tEnter Price: $");
+        String input3 = scanner.nextLine().trim();
+
+        int id = Integer.parseInt(input1);
+        String name = input2;
+        double price = Double.parseDouble(input3);
+
+        Product newProd = new Product(id,name,price);
+        inventory.add(newProd);
+
+        System.out.print("\titem added, record transaction? (y/n): ");
+        String record = scanner.nextLine().trim();
+
+        if (record.equalsIgnoreCase("Y")){
+            try {
+                BufferedWriter bufWriter = new BufferedWriter(new FileWriter("src/main/resources/inventory.csv",true));
+                String writeProd = String.format("%d|%s|%.2f",
+                        newProd.getId(), newProd.getName(), newProd.getPrice());
+                bufWriter.write(writeProd);
+                inventory.remove(inventory.size() - 1);
+                bufWriter.close();
+
+            } catch (IOException e) {
+                System.out.println("ERROR: Invalid IO Stream " + e.getMessage());
+            }
+        }
     }
 
     public static void quit() {
         System.out.println("--( goodbye! )--");
     }
 
-    /* HELPER FUNCTION: Adds items to inventory.csv
+    /* HELPER FUNCTION: Add products to csv
     public static void addToCsv(){
         try {
             BufferedWriter bufWriter = new BufferedWriter(new FileWriter("src/main/resources/inventory.csv"));
@@ -160,5 +191,5 @@ public class StoreApp {
             System.out.println("ERROR: Invalid IO Stream " + e.getMessage());
         }
     }
-     */
+    */
 }
