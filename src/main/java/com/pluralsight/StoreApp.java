@@ -16,6 +16,15 @@ public class StoreApp {
         do {
             option = menu();
 
+            switch (option) {
+                case 1 -> listProducts();
+                case 2 -> searchById();
+                case 3 -> searchByPrice();
+                case 4 -> addNewProduct;
+                case 5 -> quit();
+                default -> System.out.println("Invalid operation");
+            }
+
             for (int i = 0; i < inventory.size(); i++) {
                 Product p = inventory.get(i);
                 System.out.printf("id: %d %s - Price: $%.2f%n",
