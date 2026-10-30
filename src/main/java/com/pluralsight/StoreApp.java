@@ -17,9 +17,13 @@ public class StoreApp {
 
     public static ArrayList<Product> getInventory() {
         ArrayList<Product> inventory = new ArrayList<Product>();
-        // this method loads product objects into inventory
-        // and its details are not shown
-        return inventory;
-    }
 
+        inventory.add(new Product(211, "Apple", 1.99));
+        inventory.add(new Product(222, "Pear", 3.99));
+        inventory.add(new Product(217, "Milk", 8.50));
+        inventory.add(new Product(281, "Bread", 4.75));
+        inventory.add(new Product(215, "Rice (1/2 pound)", 11.99));
+
+    return inventory;
+    }
 }
