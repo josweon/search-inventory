@@ -65,6 +65,7 @@ public class StoreApp {
                 Enter command:\s""";
         System.out.print(menuStructure);
 
+        // TODO: add exception for non strings
         String input = scanner.nextLine().trim();
 
         return Integer.parseInt(input);
@@ -73,14 +74,14 @@ public class StoreApp {
     public static void printProducts(ArrayList<Product> inventory) {
         for (int i = 0; i < inventory.size(); i++) {
             Product p = inventory.get(i);
-            System.out.printf("id: %d %s - Price: $%.2f%n",
+            System.out.printf("\tid: %d %s - Price: $%.2f%n",
                     p.getId(), p.getName(), p.getPrice());
         }
     }
 
     public static void listProducts(ArrayList<Product> inventory) {
         inventory.sort(Comparator.comparing(Product::getName));
-        System.out.println("We carry the following inventory: ");
+        System.out.println("\t--Inventory--");
 
         printProducts(getInventory());
     }
@@ -103,14 +104,17 @@ public class StoreApp {
         if (!itemFound) System.out.println("\tno items found!");
     }
 
+    // TODO: implement searchByPrice
     public static void searchByPrice(ArrayList<Product> inventory) {
 
     }
 
+    // TODO: implement addNewProduct
     public static void addNewProduct(ArrayList<Product> inventory) {
 
     }
 
+    // TODO: implement quit
     public static void quit() {
 
     }
